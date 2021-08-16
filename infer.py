@@ -10,11 +10,11 @@ from train import create_grid
 from model import SirenModel
 
 EXP_NAME = 'cat'
-PTH_NUM = 100
+PTH_NUM = 3500
 RES = 178
 PATH = './infer.jpg'
 TEST_RANGE = 10
-LR = 1e-5
+LR = 1e-2
 
 
 if __name__ == '__main__':
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     model = SirenModel(coord_dim=in_f, num_c=3).to(device)
     model.load_state_dict(torch.load(f'exps/{EXP_NAME}/ckpt/{PTH_NUM}.pth'))
 
-    optim = torch.optim.Adam(model.parameters(), lr=LR)
+    optim = torch.optim.SGD(model.parameters(), lr=LR)
     loss_fn = torch.nn.MSELoss()
 
     for i in range(TEST_RANGE):

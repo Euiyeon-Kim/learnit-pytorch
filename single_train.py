@@ -13,15 +13,16 @@ from model import SirenModel
 EXP_NAME = 'cat'
 RES = 178
 PATH = './infer.jpg'
-TEST_RANGE = 200
-LR = 1e-5
+TEST_RANGE = 100
+LR = 1e-4
 
 
 if __name__ == '__main__':
     os.makedirs(f'exps/{EXP_NAME}/maml/compare', exist_ok=True)
 
-    img = Image.open('cat/flickr_cat_000040.jpg')
+    img = Image.open('./infer.jpg')
     img = img.resize((RES, RES), Image.BICUBIC)
+    img.save(f'exps/{EXP_NAME}/maml/compare/origin.jpg')
     img = np.array(img) / 255.
     h, w, c = img.shape
 
@@ -31,8 +32,7 @@ if __name__ == '__main__':
     in_f = grid.shape[-1]
 
     model = SirenModel(coord_dim=in_f, num_c=c).to(device)
-
-    optim = torch.optim.Adam(model.parameters(), lr=1e-4)
+    optim = torch.optim.Adam(model.parameters(), lr=LR)
     loss_fn = torch.nn.MSELoss()
 
     for i in range(TEST_RANGE):
