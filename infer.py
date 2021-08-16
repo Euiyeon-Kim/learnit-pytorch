@@ -9,15 +9,16 @@ from torchvision.utils import save_image
 from train import create_grid
 from model import SirenModel
 
-EXP_NAME = 'save'
+EXP_NAME = 'cat'
+PTH_NUM = 100
 RES = 178
 PATH = './infer.jpg'
-TEST_RANGE = 50
+TEST_RANGE = 10
 LR = 1e-5
 
 
 if __name__ == '__main__':
-    os.makedirs(f'exps/{EXP_NAME}/maml', exist_ok=True)
+    os.makedirs(f'exps/{EXP_NAME}/maml/{PTH_NUM}', exist_ok=True)
 
     img = Image.open(PATH)
     img = img.resize((RES, RES), Image.BICUBIC)
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     in_f = grid.shape[-1]
 
     model = SirenModel(coord_dim=in_f, num_c=3).to(device)
-    model.load_state_dict(torch.load(f'exps/{EXP_NAME}/ckpt/1.pth'))
+    model.load_state_dict(torch.load(f'exps/{EXP_NAME}/ckpt/{PTH_NUM}.pth'))
 
     optim = torch.optim.Adam(model.parameters(), lr=LR)
     loss_fn = torch.nn.MSELoss()
@@ -46,4 +47,4 @@ if __name__ == '__main__':
         optim.step()
 
         pred = pred.permute(2, 0, 1)
-        save_image(pred, f'exps/{EXP_NAME}/maml/{i}_{loss.item()}.jpg')
+        save_image(pred, f'exps/{EXP_NAME}/maml/{PTH_NUM}/{i}_{loss.item():.4f}.jpg')
