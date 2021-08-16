@@ -10,7 +10,7 @@ from train import create_grid
 from model import SirenModel
 
 EXP_NAME = 'cat'
-PTH_NUM = 3500
+PTH_NUM = 4000
 RES = 178
 PATH = './infer.jpg'
 TEST_RANGE = 10
@@ -35,6 +35,10 @@ if __name__ == '__main__':
 
     optim = torch.optim.SGD(model.parameters(), lr=LR)
     loss_fn = torch.nn.MSELoss()
+
+    pred = model(grid)
+    pred = pred.permute(2, 0, 1)
+    save_image(pred, f'exps/{EXP_NAME}/maml/{PTH_NUM}/meta.jpg')
 
     for i in range(TEST_RANGE):
         model.train()
