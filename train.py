@@ -7,13 +7,13 @@ from torchvision.utils import save_image
 from model import MAML
 from dataset import Custom
 
-EXP_NAME = 'debug'
+EXP_NAME = 'save'
 DATA_ROOT = './cat'
 
 RES = 178
 BATCH_SIZE = 3
 INNER_STEPS = 2
-MAX_ITERS = 1000
+MAX_ITERS = 150000
 
 OUTER_LR = 1e-5
 INNER_LR = 1e-2
@@ -67,5 +67,4 @@ if __name__ == '__main__':
                 save_image(data, f'exps/{EXP_NAME}/img/{outer_step}_{loss.item()}_data.jpg')
 
             if outer_step % 100 == 0:
-                torch.save(maml, f'exps/{EXP_NAME}/ckpt/{outer_step}.pth')
-
+                torch.save(maml.model.state_dict(), f'exps/{EXP_NAME}/ckpt/{outer_step}.pth')
