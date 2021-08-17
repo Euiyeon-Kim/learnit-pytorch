@@ -9,7 +9,7 @@ from torch.utils.data import Dataset
 class Custom(Dataset):
     def __init__(self, data_root, res):
         self.res = res
-        self.paths = glob(f'{data_root}/*.jpg')
+        self.paths = glob(f'{data_root}/*.png')
     
     def __len__(self):
         return len(self.paths)

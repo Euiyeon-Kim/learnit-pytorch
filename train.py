@@ -7,11 +7,11 @@ from torchvision.utils import save_image
 from model import MAML
 from dataset import Custom
 
-EXP_NAME = 'save'
-DATA_ROOT = './cat'
+EXP_NAME = 'a'
+DATA_ROOT = './A'
 
-RES = 178
-BATCH_SIZE = 3
+RES = 256
+BATCH_SIZE = 1
 INNER_STEPS = 2
 MAX_ITERS = 150000
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     grid = create_grid(RES, RES, device=device)
     in_f = grid.shape[-1]
 
-    maml = MAML(coord_dim=in_f, num_c=3).to(device)
+    maml = MAML(coord_dim=in_f, num_c=1).to(device)
     outer_optimizer = torch.optim.Adam(maml.parameters(), lr=OUTER_LR)
     loss_fn = torch.nn.MSELoss()
 
@@ -49,8 +49,10 @@ if __name__ == '__main__':
                 break
 
             data = data.to(device)
+
             maml.train()
             pred = maml(grid, data, True)
+
             loss = loss_fn(pred, data)
             print(f'{outer_step}/{MAX_ITERS}: {loss.item()}')
 

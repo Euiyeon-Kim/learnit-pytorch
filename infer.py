@@ -10,7 +10,7 @@ from train import create_grid
 from model import SirenModel
 
 EXP_NAME = 'cat'
-PTH_NUM = 4000
+PTH_NUM = 50000
 RES = 178
 PATH = './infer.jpg'
 TEST_RANGE = 10
